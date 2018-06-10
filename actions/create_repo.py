@@ -1,5 +1,5 @@
 from lib.base import BaseGithubAction
-from github import GithubObject
+from github import GithubObject, GithubException
 from lib.formatters import issue_to_dict
 
 __all__ = [
@@ -32,7 +32,7 @@ class CreateRepoAction(BaseGithubAction):
 
       try:
         user.get_repo(repo)
-      except Error:
+      except GithubException as e:
         repo_instance = user.create_repo(repo, 
           description=description or GithubObject.NotSet, 
           homepage=homepage or GithubObject.NotSet,
