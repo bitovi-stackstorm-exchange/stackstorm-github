@@ -14,8 +14,7 @@ email : info@stackstorm.com
 contributors:
   - Jon Middleton <jon.middleton@pulsant.com>
 dependencies:
-  # - https://github.com/bitovi-stackstorm-exchange/bitovi_packs
-  - file:////opt/stackstorm/bitovi-stackstorm-exchange/bitovi_packs
+  - https://github.com/bitovi-stackstorm-exchange/bitovi_packs
 dev_dependencies:
   - file:////opt/stackstorm/bitovi-stackstorm-exchange/bitovi_packs
 
