@@ -57,6 +57,23 @@ repository_sensor:
         - "WatchEvent"
         - "ReleaseEvent"
         - "PushEvent"
+    organizations:
+      description: "Org Repositories to monitor"
+      type: "array"
+      required: false
+      items:
+        type: "object"
+        required: true
+        properties:
+          user:
+            description: "GitHub user or organization name"
+            type: "string"
+            required: true
+          name:
+            description: "Repository name"
+            type: "string"
+            required: true
+
     repositories:
       description: "Repositories to monitor"
       type: "array"
