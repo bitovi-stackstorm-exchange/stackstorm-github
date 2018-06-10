@@ -7,6 +7,7 @@ __all__ = [
 ]
 
 
+
 def issue_to_dict(issue):
     result = {}
 

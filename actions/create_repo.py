@@ -27,13 +27,13 @@ __all__ = [
 """
 class CreateRepoAction(BaseGithubAction):
     def run(self, user, repo, homepage, description):
-        user = self._client.get_user(user)
-        repo = user.get_repo(repo)
+      user = self._client.get_user(user)
+      repo_instance = None
 
-        if repo:
-          return (False, "Repo " + repo + " already exists")
-
-        repo = user.create_repo(repo, 
+      try:
+        user.get_repo(repo)
+      except Error:
+        repo_instance = user.create_repo(repo, 
           description=description or GithubObject.NotSet, 
           homepage=homepage or GithubObject.NotSet,
           private=False,
@@ -48,8 +48,8 @@ class CreateRepoAction(BaseGithubAction):
           allow_merge_commit=GithubObject.NotSet, 
           allow_rebase_merge=GithubObject.NotSet
           )
+      else:
+        return (False, "Repo " + repo + " already exists")
 
-
-        
-        result = issue_to_dict(issue=repo)
-        return result
+      result = vars(repo_instance)
+      return result
