@@ -23,6 +23,7 @@ class GithubRepositorySensor(PollingSensor):
 
         self._client = None
         self._repositories = []
+        self._orgs = []
         self._last_event_ids = {}
         self.EVENT_TYPE_WHITELIST = []
 
@@ -38,15 +39,44 @@ class GithubRepositorySensor(PollingSensor):
 
         self.EVENT_TYPE_WHITELIST = repository_sensor.get('event_type_whitelist', [])
 
-        repositories = repository_sensor.get('repositories', None)
+        repositories = None
+        orgs = repository_sensor.get('organizations', None)
+        if not orgs:
+            raise ValueError('GithubRepositorySensor should have at least 1 org.')
+        for org_dict in orgs:
+            user = self._client.get_user(org_dict['user'])
+            org = user.get_organization(org_dict['name'])
+            repositories = org.get_repos()
+
+
+        # if we have gotten a list of org repos,
+        # merge
+        if repositories:
+            config_repositories = repository_sensor.get('repositories', None)
+            full_repositories_list = repositories + config_repositories
+            first_list =  list(map(lambda r: r.id, config_repositories))
+            second_list = list(map(lambda r: r.id, repositories))
+
+            in_first = set(first_list)
+            in_second = set(second_list)
+
+            in_second_but_not_in_first = in_second - in_first
+
+            result = first_list + list(in_second_but_not_in_first)
+
+            repositories = list(map(lambda: i: self.get_repo_from_list(i, full_repositories_list)))
+
         if not repositories:
-            raise ValueError('GithubRepositorySensor should have at least 1 repository.')
+            raise ValueError('GithubRepositorySensor should have at least 1 repository or organization.')
 
         for repository_dict in repositories:
             user = self._client.get_user(repository_dict['user'])
             repository = user.get_repo(repository_dict['name'])
             self._repositories.append((repository_dict['name'], repository))
 
+    def get_repo_from_list(self, repo_id, full_list):
+        return next((item for item in full_list if item["id"] == repo_id), None)
+        
     def poll(self):
         for repository_name, repository_obj in self._repositories:
             self._logger.debug('Processing repository "%s"' %
