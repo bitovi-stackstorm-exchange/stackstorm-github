@@ -9,7 +9,7 @@ __all__ = [
 
 
 def repo_to_dict(repo):
-    repo_dict = repo.__dict__
+    repo_dict = repo.raw_data
     repo_dict["owner"] = user_to_dict(repo.owner)
     return repo_dict
     # return {
