@@ -36,17 +36,17 @@ class CreateRepoAction(BaseGithubAction):
         repo = user.create_repo(repo, 
           description=description or GithubObject.NotSet, 
           homepage=homepage or GithubObject.NotSet,
-          private=False
-          # has_issues=github.GithubObject.NotSet,
-          # has_wiki=github.GithubObject.NotSet, 
-          # has_downloads=github.GithubObject.NotSet,
-          # has_projects=github.GithubObject.NotSet, 
-          # auto_init=github.GithubObject.NotSet, 
-          # license_template=github.GithubObject.NotSet,
-          # gitignore_template=github.GithubObject.NotSet, 
-          # allow_squash_merge=github.GithubObject.NotSet,
-          # allow_merge_commit=github.GithubObject.NotSet, 
-          # allow_rebase_merge=github.GithubObject.NotSet
+          private=False,
+          has_issues=GithubObject.NotSet,
+          has_wiki=GithubObject.NotSet, 
+          has_downloads=GithubObject.NotSet,
+          has_projects=GithubObject.NotSet, 
+          auto_init=GithubObject.NotSet, 
+          license_template=GithubObject.NotSet,
+          gitignore_template=GithubObject.NotSet, 
+          allow_squash_merge=GithubObject.NotSet,
+          allow_merge_commit=GithubObject.NotSet, 
+          allow_rebase_merge=GithubObject.NotSet
           )
 
 
