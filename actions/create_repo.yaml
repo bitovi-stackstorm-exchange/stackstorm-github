@@ -16,7 +16,6 @@ parameters:
   homepage:
     type: "string"
     description: Home Page
-    required: true
   description:
     type: "string"
     description: Description
