@@ -27,13 +27,14 @@ __all__ = [
 """
 class CreateRepoAction(BaseGithubAction):
     def run(self, user, repo, homepage, description):
-      user = self._client.get_user(user)
+      # org = self._client.get_user(user)
+      org = self._client.get_organization(user)
       repo_instance = None
 
       try:
-        user.get_repo(repo)
+        org.get_repo(repo)
       except GithubException as e:
-        repo_instance = user.create_repo(repo, 
+        repo_instance = org.create_repo(repo, 
           description=description or GithubObject.NotSet, 
           homepage=homepage or GithubObject.NotSet,
           private=False,
