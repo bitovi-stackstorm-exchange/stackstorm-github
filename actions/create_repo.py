@@ -1,6 +1,6 @@
 from lib.base import BaseGithubAction
 from github import GithubObject, GithubException
-from lib.formatters import issue_to_dict
+from lib.formatters import repo_to_dict
 
 __all__ = [
     'CreateRepoAction'
@@ -52,5 +52,5 @@ class CreateRepoAction(BaseGithubAction):
       else:
         return (False, "Repo " + repo + " already exists")
 
-      result = vars(repo_instance)
+      result = repo_to_dict(repo_instance)
       return result
