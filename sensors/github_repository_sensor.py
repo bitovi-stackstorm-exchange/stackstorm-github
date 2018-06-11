@@ -45,7 +45,7 @@ class GithubRepositorySensor(PollingSensor):
             raise ValueError('GithubRepositorySensor should have at least 1 org.')
         for org_dict in orgs:
             user = self._client.get_user(org_dict['user'])
-            org = user.get_organization(org_dict['name'])
+            org = self._client.get_organization(org_dict['name'])
             repositories = org.get_repos()
 
 
