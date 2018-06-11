@@ -1,0 +1,29 @@
+---
+name: "create_file"
+runner_type: "python-script"
+description: "Create a file via a commit"
+enabled: true
+entry_point: "create_file.py"
+parameters:
+  user:
+    type: "string"
+    description: "user or org"
+    required: true
+  repo:
+    type: "string"
+    description: "repo name"
+    required: true
+  path:
+    type: "string"
+    description: "The file path"
+    required: true
+  content:
+    type: "string"
+    description: "the contents of the file to upload"
+  message:
+    type: "string"
+    description: "commit message"
+  branch:
+    type: "string"
+    description: "The branch in GitHub"
+    default: "master"
