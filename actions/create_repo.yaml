@@ -1,0 +1,22 @@
+---
+name: create_repo
+runner_type: python-script
+description: Create a Github Repo.
+enabled: true
+entry_point: create_repo.py
+parameters:
+  user:
+    type: "string"
+    description: "User / organization name."
+    required: true
+  repo:
+    type: "string"
+    description: "Repository name."
+    required: true
+  homepage:
+    type: "string"
+    description: Home Page
+  description:
+    type: "string"
+    description: Description
+    required: false

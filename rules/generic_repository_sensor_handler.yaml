@@ -1,0 +1,11 @@
+---
+name: "generic_repository_sensor_handler"
+pack: "github"
+description: "Generic handler for the github repository sensor"
+enabled: false
+
+trigger:
+  type: "github.repository_event"
+
+action:
+  ref: "core.noop"

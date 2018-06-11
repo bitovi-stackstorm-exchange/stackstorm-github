@@ -38,14 +38,49 @@ class GithubRepositorySensor(PollingSensor):
 
         self.EVENT_TYPE_WHITELIST = repository_sensor.get('event_type_whitelist', [])
 
-        repositories = repository_sensor.get('repositories', None)
+        repositories = None
+        orgs = repository_sensor.get('organizations', None)
+        if not orgs:
+            raise ValueError('GithubRepositorySensor should have at least 1 org.')
+        for org_dict in orgs:
+            user = self._client.get_user(org_dict['user'])
+            # org = self._client.get_organization(org_dict['name'])
+            # repositories = list(map(lambda r: { "name": r.name, "user": r.owner.login }, org.get_repos()))
+            repositories = repository_sensor.get('repositories', None)
+
+
+        # if we have gotten a list of org repos,
+        # merge
+        # if repositories:
+        #     config_repositories = repository_sensor.get('repositories', None)
+        #     full_repositories_list = list(repositories + config_repositories)
+        #     first_list =  list(map(lambda r: r["name"], config_repositories))
+        #     second_list = list(map(lambda r: r["name"], repositories))
+
+        #     in_first = set(first_list)
+        #     in_second = set(second_list)
+
+        #     in_second_but_not_in_first = in_second - in_first
+
+        #     result = first_list + list(in_second_but_not_in_first)
+
+        #     repositories = list(map(lambda i: self.get_repo_from_list(i, full_repositories_list), result))
+
         if not repositories:
-            raise ValueError('GithubRepositorySensor should have at least 1 repository.')
+            raise ValueError('GithubRepositorySensor should have at least 1 repository or organization.')
 
         for repository_dict in repositories:
             user = self._client.get_user(repository_dict['user'])
             repository = user.get_repo(repository_dict['name'])
             self._repositories.append((repository_dict['name'], repository))
+
+    def get_repo_from_list(self, repo_name, full_list):
+        first_matched_repo = {}
+        for el in full_list:
+            if el["name"]==repo_name: 
+                first_matched_repo = el
+                break
+        return first_matched_repo
 
     def poll(self):
         for repository_name, repository_obj in self._repositories:
