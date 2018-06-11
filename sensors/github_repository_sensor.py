@@ -46,7 +46,7 @@ class GithubRepositorySensor(PollingSensor):
         for org_dict in orgs:
             user = self._client.get_user(org_dict['user'])
             org = self._client.get_organization(org_dict['name'])
-            repositories = org.get_repos()
+            repositories = list(map(lambda r: { "name": r["name"], "user": r["owner"]["login"] }, org.get_repos()))
 
 
         # if we have gotten a list of org repos,
