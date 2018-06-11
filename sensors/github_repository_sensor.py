@@ -64,7 +64,7 @@ class GithubRepositorySensor(PollingSensor):
 
             result = first_list + list(in_second_but_not_in_first)
 
-            repositories = list(map(lambda: i: self.get_repo_from_list(i, full_repositories_list)))
+            repositories = list(map(lambda i: self.get_repo_from_list(i, full_repositories_list)))
 
         if not repositories:
             raise ValueError('GithubRepositorySensor should have at least 1 repository or organization.')
@@ -76,7 +76,7 @@ class GithubRepositorySensor(PollingSensor):
 
     def get_repo_from_list(self, repo_id, full_list):
         return next((item for item in full_list if item["id"] == repo_id), None)
-        
+
     def poll(self):
         for repository_name, repository_obj in self._repositories:
             self._logger.debug('Processing repository "%s"' %
